@@ -1,0 +1,206 @@
+
+This You Tube illustratees from start to finish 
+creation of some Bluetooth low energy functionality.
+
+We use a Nordic Semiconductor nRF52832 ARM cortex MF4
+microcontroler and a DAP link USB com port and debug
+interface and we develop code for it with the C++
+Arduino / Genuino IDE
+
+The hardware target is the RedBear BLE Nano - 2.
+A tiny low cost very powerful little board !
+
+Red Bear is now part of particle.io they make
+many kinds of these powefull little IOT devices.
+
+
+Slide 2:
+
+First you must setup the Arduino environment for the 
+RedBear BLE Nano-2 hardware. 
+
+You need to install the board support package for the 
+Red Bear BLE Nano - 2.
+
+With some helpful instructions from Red Bear's github
+site you can get this to work. 
+
+This is just a snippet of the steps, but they do work.
+
+
+Slide 3:
+
+
+Once you get it installed, it becomes one of the many 
+hardware platform choices you can select when you want
+to code Arrduino style.
+
+I selected "Examples for BLE_Nano2", sketch file:
+"BLE_SimplePeripheral" as my example starting point.
+
+
+
+Slide 4:
+
+The goal for this project is to send date to 
+and receive data from my Android Lenovo / Moto G phone.
+
+My modified Android sketch file 320 lines (with a lots of 
+pre-written system code backing it up) does  everthing
+needed
+
+I added a Write/Read back functionality sometimes called 
+"Loop Back" testing. This provided for the demo I will
+share with you on my cell phone.
+
+
+Slide 5: (code 1)
+
+Now lets talk about the code. 
+
+The code sketch file is actually rather short 
+(But, let's not think about pre-written support code behind this !)
+
+I really only had to modify or add about 
+
+6 lines of code, but I  also added about 
+42 lines of comments to assist in my, and I hope,
+your understanding.
+
+
+On Line 22 I changed the name of device as it will appear
+on my cell phone to add JMK - "That's Me"
+
+I added some comments on Line 43-46 to clarify BLE jargon
+A characteristic is some data that is sent over the wireless channel.
+This data can be 
+	1) Writeable by the cell phone (Cell phone sends to RedBear Nano)
+	2) Readable by the cell phone (RedBear Nano sends to cell phone upon request)
+	3) Notifed to the cell phone  (RedBear Nano sends to cell phone at intervals.)
+
+
+Slide 6
+
+For my modifications a very important function was called
+"gattServerWriteCallBack(..)" 
+
+This is an event handler (A.K.A - call back function)
+that occurs when the BLE nano recieives data from cell phone.
+
+When that first kind of characteristic one that is writable
+(refered to characteristic #1 in the progam)
+is written sent to the BLE Nano by the cell phone, this call back
+is happens when the written data is received.
+
+What I added are the two lines 184 and 185 that take this data and 
+use it to change also the Read characteristic (#2)
+That way the user of the cell phone can latter request a 
+read back of this data to verfy what was sent, was received.
+
+
+Slide 7:
+
+This slide is the callback function for the 1 second timer task.
+I Eliminatd a repetative call to the BLE nano debug serial
+port, at line 196, and added instead an LED blink at lines 213-214.
+This makes reading more important serial output easier.
+
+I also put in some comments pointing out how this 1 second
+task updates the custom Notify characteristic #3 
+
+This 1 second task also updates (simulates) a changing heart 
+beat value for the heart rate update service On line 207.
+Heart rate simulation is often provided in sample BLE code.
+
+Slide 8:
+
+The "loop()" is where non event related code gets put to run 
+any Arduino application.
+
+For this demo sketch all the action happens in the event related code
+So we just wait for events.
+
+Slide 9:
+
+Now lets talk about my test setup for Android G phone.
+
+For convenience and easy screen shot capture, I remotely controled
+my cell phone over a USB cable with a free PC program called Visor.
+
+
+Slide 10:
+
+I used the free app "nrFConnect" provided by Nordic Semiconductor
+to test their technology.
+
+For me nothing is easy (read the friendly manual if you can find it)
+Or instead follow these steps in selecting ther right buttons
+and dials to see the things you need to see.
+
+First you want to find the BLE device out there that 
+has our name "BLE_Periph_JMK" on it. Then
+Press the Connect button.
+
+Slide 11:
+
+This opens up the list of our custom Characteristics,
+Click on the Up arrow for the one with WRTE properties.
+
+Slide 12:
+
+Selct date type "Text", type in "Joe", 
+make advanced select "Command"
+Save as load choice  "Joe1"
+
+
+Slide 13:
+
+Press Load, Click on Send
+
+Slide 14:
+
+So what happens. 
+On your cell phone the WRITE Characteristic indicates
+"Joe" was written to the Nano.
+
+Slide 15:
+
+But how does the Cell phone user know that the Nano got the data ??
+
+We can find out by reading it back the READ characterisitc
+from the Nano by clicking on the down arrow as shown
+
+Once this is done the value "Joe" sent earlier now appears as the 
+value of the READ characteristic
+
+Believe me this works for "Mike" as well.
+
+Slide 16:
+
+Try clicking on the Multi down arrow of the custom NOTIFY
+characteristic, you will set it get changed every second,
+as setup in timer task handler.
+
+Try also going back (scroll up on the cell phone) to display
+the hear rate servcice and click it to see a hear rate 
+that varies from 100 to 175 
+
+For more info and source code for my modified 300 line Sketch,
+see my git hub site listed bottom of this slide.
+
+I hope this breaks the ice for future BLE adventures.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
