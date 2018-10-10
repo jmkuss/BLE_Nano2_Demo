@@ -3,6 +3,4 @@ BLE, Nordic nRF53832, Arduino, Red Bear, Nano-2 Project:
 
 Data Read to and write from cell phone / BLE central.
 
-See also this You Tube presentation
-
-     <https://youtu.be/2zHHBa44PVc>
+To see this demo on You Tube: [https://youtu.be/2zHHBa44PVc](https://youtu.be/2zHHBa44PVc)
